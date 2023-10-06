@@ -1,0 +1,124 @@
+<devicedata>
+	<copyright>BP</copyright>
+	<creator>BP</creator>
+	<manufacturer>BP</manufacturer>
+	<name>HA Alarm Panel</name>
+	<model>HA Alarm Panel</model>
+	<created>09/10/2023 12:00</created>
+	<modified>10/06/2023 12:00</modified>
+	<version>100</version>
+	<control>lua_gen</control>
+	<controlmethod>IP</controlmethod>
+	<driver>DriverWorks</driver>
+	<composer_categories>
+		<category>Security</category>
+	</composer_categories>
+	<config>
+		<script jit="1" file="Control4-HA-Base/driver.lua"/>
+		<properties>
+			<property>
+				<name>Entity ID</name>
+				<type>STRING</type>
+				<readonly>false</readonly>
+				<default>alarm_control_panel.test_alarm</default>
+			</property>
+			<property>
+				<name>Driver Version</name>
+				<default></default>
+				<type>STRING</type>
+				<readonly>true</readonly>
+			</property>
+			<property>
+				<name>Debug Mode</name>
+				<type>LIST</type>
+				<items>
+					<item>Off</item>
+					<item>On</item>
+				</items>
+				<default>Off</default>
+				<readonly>false</readonly>
+			</property>
+		</properties>
+		<actions>
+		</actions>
+		<commands/>
+	</config>
+	<proxies>
+		<proxy proxybindingid="5001">securitypanel</proxy>
+		<proxy proxybindingid="5002">security</proxy>
+	</proxies>
+	<capabilities>
+		<!-- Panel Proxy Capabilities -->
+		<can_set_time>false</can_set_time>
+		<can_activate_partitions>false</can_activate_partitions>
+
+		<!-- Partition Proxy Capabilities -->
+		<ui_version>2</ui_version>
+		<arm_states>Home,Away,Night,Vacation</arm_states>
+		<supports_virtual_keypad>false</supports_virtual_keypad>
+	</capabilities>
+	<events/>
+	<connections>
+		<connection>
+			<id>999</id>
+			<facing>1</facing>
+			<type>1</type>
+			<connectionname>Device Link</connectionname>
+			<consumer>True</consumer>
+			<classes>
+				<class>
+					<classname>HA_DEVICE</classname>
+					<autobind>True</autobind>
+				</class>
+			</classes>
+		</connection>
+		<connection>
+			<id>5001</id>
+			<facing>6</facing>
+			<connectionname>Security Panel</connectionname>
+			<type>2</type>
+			<consumer>False</consumer>
+			<audiosource>False</audiosource>
+			<videosource>False</videosource>
+			<linelevel>False</linelevel>
+			<classes>
+				<class>
+					<classname>SECURITY_PANEL</classname>
+				</class>
+			</classes>
+			<hidden>False</hidden>
+		</connection>
+		<connection>
+			<id>5002</id>
+			<facing>6</facing>
+			<connectionname>Security Partition 1</connectionname>
+			<type>2</type>
+			<consumer>False</consumer>
+			<audiosource>False</audiosource>
+			<videosource>False</videosource>
+			<linelevel>False</linelevel>
+			<classes>
+				<class>
+					<classname>SECURITY</classname>
+				</class>
+			</classes>
+			<hidden>False</hidden>
+		</connection>
+		<connection proxybindingid="5002">
+			<id>7002</id>
+			<facing>6</facing>
+			<connectionname>Room Selection Partition 1</connectionname>
+			<type>7</type>
+			<consumer>False</consumer>
+			<audiosource>False</audiosource>
+			<videosource>False</videosource>
+			<linelevel>False</linelevel>
+			<classes>
+				<class>
+					<autobind>True</autobind>
+					<classname>SECURITY_SYSTEM</classname>
+				</class>
+			</classes>
+		</connection>
+	</connections>
+</devicedata>
