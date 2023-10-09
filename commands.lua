@@ -5,7 +5,6 @@ local TRIGGER = 8
 local ARM_CUSTOM_BYPASS = 16
 local ARM_VACATION = 32
 
--- Create a table to map enum values to their names
 local enum_to_name = {
     [ARM_HOME] = "ARM_HOME",
     [ARM_AWAY] = "ARM_AWAY",
@@ -21,7 +20,12 @@ CodeRequired = false
 function DRV.OnDriverLateInit(init)
     C4:SendToProxy(5002, "PARTITION_ENABLED", { ENABLED = "true" }, "NOTIFY")
     C4:SendToProxy(5002, "PARTITION_STATE_INIT", { STATE = "DISARMED_NOT_READY", CODE_REQUIRED_TO_CLEAR = false }, "NOTIFY")
+
     C4:SendToProxy(5001, "PANEL_INITIALIZED", {}, "NOTIFY")
+end
+
+function OPC.Number_of_Zones(value)
+    
 end
 
 function RFP.PARTITION_ARM(idBinding, strCommand, tParams)
@@ -118,27 +122,21 @@ function Parse(data)
 
     if state ~= nil then
         if state == "disarmed" then
-            C4:SendToProxy(5002, "PARTITION_STATE_INIT", { STATE = "DISARMED_READY", CODE_REQUIRED_TO_CLEAR = false }, "NOTIFY")
+            UpdatePartitionState("DISARMED_READY", "")
         elseif state == "arming" then
-            C4:SendToProxy(5002, "PARTITION_STATE_INIT", { STATE = "EXIT_DELAY", CODE_REQUIRED_TO_CLEAR = false }, "NOTIFY")
+            UpdatePartitionState("EXIT_DELAY", "")
         elseif state == "armed_home" then
-            C4:SendToProxy(5002, "PARTITION_STATE_INIT",
-                { STATE = "ARMED", TYPE = "Home", CODE_REQUIRED_TO_CLEAR = false }, "NOTIFY")
+            UpdatePartitionState("ARMED", "Home")
         elseif state == "armed_away" then
-            C4:SendToProxy(5002, "PARTITION_STATE_INIT",
-                { STATE = "ARMED", TYPE = "Away", CODE_REQUIRED_TO_CLEAR = false }, "NOTIFY")
+            UpdatePartitionState("ARMED", "Away")
         elseif state == "armed_night" then
-            C4:SendToProxy(5002, "PARTITION_STATE_INIT",
-                { STATE = "ARMED", TYPE = "Night", CODE_REQUIRED_TO_CLEAR = false }, "NOTIFY")
+            UpdatePartitionState("ARMED", "Night")
         elseif state == "armed_vacation" then
-            C4:SendToProxy(5002, "PARTITION_STATE_INIT",
-                { STATE = "ARMED", TYPE = "Vacation", CODE_REQUIRED_TO_CLEAR = false }, "NOTIFY")
+            UpdatePartitionState("ARMED", "Vacation")
         elseif state == "armed_custom_bypass" then
-            C4:SendToProxy(5002, "PARTITION_STATE_INIT",
-                { STATE = "ARMED", TYPE = "Custom Bypass", CODE_REQUIRED_TO_CLEAR = false }, "NOTIFY")
+            UpdatePartitionState("ARMED", "Custom Bypass")
         elseif state == "triggered" then
-            C4:SendToProxy(5002, "PARTITION_STATE_INIT",
-                { STATE = "ALARM", TYPE = "Burglary", CODE_REQUIRED_TO_CLEAR = false }, "NOTIFY")
+            UpdatePartitionState("ALARM", "Burglary")
         end
     end
 
@@ -150,8 +148,14 @@ function Parse(data)
     if selectedAttribute ~= nil then
         if selectedAttribute == true or selectedAttribute == "true" then
             CodeRequired = true
+        else
+            CodeRequired = false
         end
 
         C4:SendToProxy(5002, "CODE_REQUIRED", { CODE_REQUIRED_TO_ARM = CodeRequired }, "NOTIFY")
     end
+end
+
+function UpdatePartitionState(state, type)
+    C4:SendToProxy(5002, "PARTITION_STATE", { STATE = state, TYPE = type, CODE_REQUIRED_TO_CLEAR = false }, "NOTIFY")
 end

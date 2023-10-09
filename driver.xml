@@ -23,6 +23,14 @@
 				<default>alarm_control_panel.test_alarm</default>
 			</property>
 			<property>
+				<name>Number of Zones</name>
+				<type>RANGED_INTEGER</type>
+				<readonly>false</readonly>
+				<default>10</default>
+				<minimum>1</minimum>
+				<maximum>128</maximum>
+			</property>
+			<property>
 				<name>Driver Version</name>
 				<default></default>
 				<type>STRING</type>
