@@ -5,7 +5,7 @@
 	<name>HA Alarm Panel</name>
 	<model>HA Alarm Panel</model>
 	<created>09/10/2023 12:00</created>
-	<modified>10/06/2023 12:00</modified>
+	<modified>10/13/2023 12:00</modified>
 	<version>100</version>
 	<control>lua_gen</control>
 	<controlmethod>IP</controlmethod>
@@ -20,15 +20,7 @@
 				<name>Entity ID</name>
 				<type>STRING</type>
 				<readonly>false</readonly>
-				<default>alarm_control_panel.test_alarm</default>
-			</property>
-			<property>
-				<name>Number of Zones</name>
-				<type>RANGED_INTEGER</type>
-				<readonly>false</readonly>
-				<default>10</default>
-				<minimum>1</minimum>
-				<maximum>128</maximum>
+				<default>alarm_control_panel.alarm_panel</default>
 			</property>
 			<property>
 				<name>Driver Version</name>

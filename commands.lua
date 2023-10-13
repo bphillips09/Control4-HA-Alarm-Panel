@@ -24,10 +24,6 @@ function DRV.OnDriverLateInit(init)
     C4:SendToProxy(5001, "PANEL_INITIALIZED", {}, "NOTIFY")
 end
 
-function OPC.Number_of_Zones(value)
-    
-end
-
 function RFP.PARTITION_ARM(idBinding, strCommand, tParams)
     local bypass = tParams.Bypass
     local armType = tParams.ArmType
